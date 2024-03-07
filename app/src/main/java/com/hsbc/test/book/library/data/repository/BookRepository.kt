@@ -2,6 +2,7 @@ package com.hsbc.test.book.library.data.repository
 
 import com.hsbc.test.book.lib_db.BookDataBase
 import com.hsbc.test.book.lib_db.entity.Book
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object BookRepository {

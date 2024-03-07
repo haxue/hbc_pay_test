@@ -8,6 +8,7 @@ import com.hsbc.test.book.library.common.utils.bookTransformToVO
 import com.hsbc.test.book.library.common.utils.bookVOToBook
 import com.hsbc.test.book.library.data.repository.BookRepository
 import com.hsbc.test.book.library.data.vo.BookVO
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookListViewModel(private val repository: BookRepository = BookRepository) : ViewModel() {
+@HiltViewModel
+class BookListViewModel @Inject constructor() : ViewModel() {
     private var _bookListState = MutableStateFlow(emptyList<BookVO>())
     private val _loadingState = MutableStateFlow(LoadingStatus.Default)
 
@@ -24,8 +27,10 @@ class BookListViewModel(private val repository: BookRepository = BookRepository)
         private set
     val bookListState: StateFlow<List<BookVO>> = _bookListState.asStateFlow()
     val loadingStatue: StateFlow<LoadingStatus> = _loadingState.asStateFlow()
+    @Inject
+    lateinit var repository: BookRepository
 
-    init {
+    fun startListener() {
         viewModelScope.launch {
             repository.deleteEvent.collectLatest { id ->
                 if (!id.isNullOrBlank()) {

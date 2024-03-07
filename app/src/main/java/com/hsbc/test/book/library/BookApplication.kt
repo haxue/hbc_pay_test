@@ -3,10 +3,12 @@ package com.hsbc.test.book.library
 import android.app.Application
 import com.hsbc.test.book.lib_db.BookDataBase
 import com.hsbc.test.book.lib_db.entity.Book
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@HiltAndroidApp
 class BookApplication : Application() {
     companion object {
         private const val TAG = "BookApplication"
@@ -14,7 +16,6 @@ class BookApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val curTime = System.currentTimeMillis()
         BookDataBase.getDataBase(this) {
             GlobalScope.launch(Dispatchers.Default) {
                 insertDemoData(it)

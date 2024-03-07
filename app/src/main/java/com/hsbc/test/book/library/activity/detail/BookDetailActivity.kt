@@ -11,7 +11,9 @@ import androidx.compose.ui.Modifier
 import com.hsbc.test.book.library.activity.detail.composable.BookDetailScreen
 import com.hsbc.test.book.library.common.route.DETAIL_ARGUMENT_ID
 import com.hsbc.test.book.library.vm.BookDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BookDetailActivity: ComponentActivity() {
     companion object {
         private const val TAG = "BookDetailActivity"

@@ -1,8 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-//    id("kotlin-kapt")
-//    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+//    id("kotlin-kapt") // kapt
+    id("com.google.devtools.ksp") // ksp
 }
 
 android {
@@ -20,6 +21,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+//        testInstrumentationRunner = "com.hsbc.test.book.library.hilt.CustomTestRunner"
     }
 
     buildTypes {
@@ -48,9 +51,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+//    hilt {
+//        enableAggregatingTask = true
+//    }
 }
 
 dependencies {
+    val hiltVersion = "2.48.1"
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
@@ -66,6 +73,12 @@ dependencies {
 //    implementation("com.facebook.stetho:stetho:1.6.0")
     implementation(project(mapOf("path" to ":lib_db")))
     implementation("androidx.test.ext:junit-ktx:1.1.5")
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    ksp("com.google.dagger:hilt-android-compiler:$hiltVersion")
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:$hiltVersion")
+    kspAndroidTest("com.google.dagger:hilt-android-compiler:$hiltVersion")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

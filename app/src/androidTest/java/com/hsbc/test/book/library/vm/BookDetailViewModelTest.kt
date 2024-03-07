@@ -10,33 +10,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
 import java.util.concurrent.CountDownLatch
 
 @RunWith(AndroidJUnit4::class)
 class BookDetailViewModelTest {
     private lateinit var database: BookDataBase
     private lateinit var vm: BookListViewModel
-    private lateinit var repository: BookRepository
 
-    //    private val testDispatcher = StandardTestDispatcher()
+//    @Inject
+    lateinit var repository: BookRepository
     @Before
     fun setupDatabase() {
-        MockitoAnnotations.openMocks(this)
-//        Dispatchers.setMain(testDispatcher)
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             BookDataBase::class.java
         ).allowMainThreadQueries().build()
         repository = BookRepository
-        vm = BookListViewModel(repository)
+        vm = BookListViewModel()
+        vm.repository = repository
         insertDemoData(database)
 
     }
@@ -53,6 +48,11 @@ class BookDetailViewModelTest {
             try {
                 val fetchJob = vm.fetchBookList()
                 fetchJob.join()
+                vm.bookListState.value.let {
+                    it.forEach { vo ->
+                        println(vo)
+                    }
+                }
                 assert(!vm.bookListState.value.isNullOrEmpty()) {
                     "could no find any book entity"
                 }

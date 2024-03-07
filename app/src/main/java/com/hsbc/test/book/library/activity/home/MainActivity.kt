@@ -15,7 +15,9 @@ import com.hsbc.test.book.library.activity.home.composable.bars.NavBottomBar
 import com.hsbc.test.book.library.common.local_provider.BookViewModelProvider
 import com.hsbc.test.book.library.ui.theme.HSBC_TEST_BOOK_LIBRARYTheme
 import com.hsbc.test.book.library.vm.BookListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     companion object {
         private const val TAG = "MainActivity"
@@ -24,8 +26,8 @@ class MainActivity : ComponentActivity() {
     private val vm by viewModels<BookListViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        vm.startListener()
         setContent {
-//            val vm : BookListViewModel = viewModel()
             HSBC_TEST_BOOK_LIBRARYTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     CompositionLocalProvider(value = BookViewModelProvider provides vm) {
@@ -34,7 +36,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-//        subscribeData()
     }
 
 //    private fun subscribeData() {
